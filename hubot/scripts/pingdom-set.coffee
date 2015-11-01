@@ -1,5 +1,5 @@
 # Description
-#   Pingdom API set script. Only tested using slack <http://slack.com/>.
+#   Pingdom API set script.
 #
 # Configuration:
 #   HUBOT_PINGDOM_USERNAME
