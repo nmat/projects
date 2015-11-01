@@ -81,9 +81,9 @@ class PingdomClient
       if response.checks.length > 0
         lines = ["*Pingdom info:* I will now #{state} the following check:"]
         for check in response.checks
-          if check.id.match(checkid)
+          if "#{check.id}" == "#{checkid}"
             my.requestput msg, "checks/#{check.id}", data, (response) ->
-              lines.push ">Setting #{check.name}: CheckID: #{check.id} to #{state}"
+            lines.push ">Setting #{check.name}: CheckID: #{check.id} to #{state}"
         msg.send lines.join('\n')
       else
         msg.send "*Pingdom info:* Couldn't find any checks for #{checkid}"
@@ -98,6 +98,7 @@ class PingdomClient
         if err
           msg.send "*Pingdom Error:* #{err}"
           return
+        content = JSON.parse(body)
         if content.error
           msg.send "*Pingdom Error:* #{content.error.statuscode} #{content.error.errormessage}"
           return
@@ -124,7 +125,7 @@ client = new PingdomClient(username, password, app_key)
 # Bot command input
 module.exports = (robot) ->
   robot.respond /pingdom set all (.*) (pause|paused|unpause|unpaused)$/i, (msg) ->
-    shortname = num.toLowerCase()
+    shortname = msg.match[1].toLowerCase()
     state = msg.match[2].toLowerCase()
     client.pingdomsetall(msg,shortname,state)
 
